@@ -1,0 +1,23 @@
+---
+title: "GraphQL Query overview"
+---
+## Queries
+
+Every GraphQL schema has a root type for both queries and mutations.
+
+The root type defines how GraphQL operations begin. It is the entry point to constructing GraphQL queries.
+
+<%- (graphql_query['fields'] || []).each do |field| %>
+##<%= field['name'] %>
+<%= field['description'] %>
+
+<%- if field['args'].any? %>
+### Arguments
+
+| Argument | Type | Description  |
+| ------ | ------ | -----: |
+<%- field['args'].each do |arg| %>
+|<%= arg['name'] %> | <%= arg['type']['ofType']['name'] %> | <%= arg['description'] %> |
+<%- end %>
+<% end %>
+<%- end %>

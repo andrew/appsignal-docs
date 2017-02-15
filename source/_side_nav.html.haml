@@ -152,6 +152,31 @@
         %li= link_with_active 'Event names', '/api/event-names.html'
 
     %li.section
+      %h2{:data => { :menu => "api" } }
+        AppSignal GraphQL API <sup>Beta</sup>
+        = image_tag "arrow.svg"
+      %ul
+        %li= link_with_active 'Overview', '/graphql/index.html'
+        %li= link_with_active 'Query', '/graphql/query.html'
+
+        %li= link_with_active 'Objects', '/graphql/objects.html'
+        %ul
+          - graphql_objects.each do |obj|
+            %li= link_with_active obj['name'], "/graphql/objects/#{obj['name'].underscore}.html"
+
+        %li= link_with_active 'Interfaces', '/graphql/interfaces.html'
+        %ul
+          - graphql_interfaces.each do |obj|
+            %li= link_with_active obj['name'], "/graphql/interfaces/#{obj['name'].underscore}.html"
+
+        %li= link_with_active 'Scalars', '/graphql/scalars.html'
+
+        %li= link_with_active 'Unions', '/graphql/unions.html'
+        %ul
+          - graphql_unions.each do |obj|
+            %li= link_with_active obj['name'], "/graphql/unions/#{obj['name'].underscore}.html"
+
+    %li.section
       %h2{:data => { :menu => "appsignal" } }
         AppSignal <sup>Meta</sup>
         = image_tag "arrow.svg"

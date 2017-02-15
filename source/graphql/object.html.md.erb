@@ -1,0 +1,14 @@
+---
+title: "GraphQL Object"
+---
+
+#  <%= obj['name'] %>
+<%= obj['description'] %>
+
+## Fields
+<% obj['fields'].sort_by { |f| f['name'] }.each do |field| %>
+__<%= field['name'] %>__ (<%= link_to (field['type']['name'] || field['type']['ofType']['name']), "/graphql/scalars.html##{(field['type']['name'] || field['type']['ofType']['name']).try(:downcase) }" %>)
+
+<%= field['description'] %>
+
+<% end %>

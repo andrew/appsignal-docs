@@ -1,0 +1,11 @@
+---
+title: "GraphQL API Scalars"
+---
+
+Scalars are primitive values such as Int or String.
+
+
+<%- graphql_scalars.each do |scalar| %>
+## <%= scalar['name'] %>
+<%= simple_format scalar['description'] %>
+<%- end %>

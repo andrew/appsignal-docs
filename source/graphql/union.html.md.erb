@@ -1,0 +1,10 @@
+---
+title: "GraphQL Union"
+---
+
+#  <%= obj['name'] %>
+<%= obj['description'] %>
+## Possible types
+<%- obj['possibleTypes'].each do |possible_type| %>
+* <%= link_to possible_type['name'], "/graphql/#{possible_type['kind'].pluralize.downcase}/#{possible_type['name'].underscore}.html" %>
+<%- end %>

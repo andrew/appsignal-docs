@@ -6,9 +6,9 @@ title: "GraphQL Interface"
 <%= obj.description %>
 
 ## Fields
+
+| Name | Type | Description  |
+| ------ | ------ | ----- |
 <% obj.fields.sort_by { |f| f.name }.each do |field| %>
-__<%= field.name %>__ (<%= field_link(field) %>)
-
-<%= field.description %>
-
+| <%= field.name %> | <%= field_link(field) %> | <%= field.description %> |
 <% end %>

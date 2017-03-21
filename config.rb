@@ -65,7 +65,7 @@ helpers do
 
     # The rest has a single page
     else
-      "/graphql/#{type.unwrap.kind.downcase}.html##{(type.unwrap.name).try(:underscore) }"
+      "/graphql/#{type.unwrap.kind.pluralize.downcase}.html##{(type.unwrap.name).try(:underscore) }"
     end
     link_to type.unwrap.name, path
   end

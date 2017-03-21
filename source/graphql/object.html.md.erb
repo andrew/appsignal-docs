@@ -9,10 +9,9 @@ title: "GraphQL Object"
 <%= obj.interfaces.sort_by { |i| i.name}.map { |i| type_link(i) }.join(', ') %>
 
 ## Fields
+| Name | Type | Description  |
+| ------ | ------ | ----- |
 <% obj.fields.sort_by { |f| f.name }.each do |field| %>
-__<%= field.name %>__ (<%= field_link(field) %>)
-
-<%= field.description %>
-
+| <%= field.name %> | <%= field_link(field) %> | <%= field.description %> |
 <% end %>
 

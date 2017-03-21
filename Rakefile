@@ -29,6 +29,12 @@ task :cleanup do
   puts status ? "OK" : "FAILED"
 end
 
+desc "Get GraphQL schema from app dir"
+task :graphql do
+  puts "## Fetching GraphQL"
+  system("cp ../appsignal-server/vendor/assets/javascripts/relay/data/schema.json ./data/graphql.json")
+end
+
 desc "Build and deploy website"
 task :build_deploy => [:build, :deploy, :cleanup]
 

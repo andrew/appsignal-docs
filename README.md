@@ -53,6 +53,14 @@ Which will render the following:
 For more information (and code) about these customizations, please see the
 [`appsignal_markdown.rb`](/blob/master/lib/appsignal_markdown.rb) file.
 
+## GraphQL schema
+
+Get the latest schema from the app dir by running:
+
+```
+bundle exec rake graphql
+```
+
 ## Contributing
 
 Thinking of contributing to our documentation? Awesome! 🚀

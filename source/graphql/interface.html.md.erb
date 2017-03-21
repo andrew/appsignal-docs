@@ -2,13 +2,13 @@
 title: "GraphQL Interface"
 ---
 
-#  <%= obj['name'] %>
-<%= obj['description'] %>
+#  <%= obj.name %>
+<%= obj.description %>
 
 ## Fields
-<% obj['fields'].sort_by { |f| f['name'] }.each do |field| %>
-__<%= field['name'] %>__ (<%= field['type']['name'] || field['type']['ofType']['name'] %>)
+<% obj.fields.sort_by { |f| f.name }.each do |field| %>
+__<%= field.name %>__ (<%= field_link(field) %>)
 
-<%= field['description'] %>
+<%= field.description %>
 
 <% end %>

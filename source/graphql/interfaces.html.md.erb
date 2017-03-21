@@ -1,0 +1,11 @@
+---
+title: "GraphQL Interface"
+---
+
+In to-your Face
+
+## Available interfaces
+
+<%- graphql_interfaces.each do |obj| %>
+* <%= link_to obj.name, "/graphql/interface/#{obj.name.underscore}.html" %>
+<%- end %>

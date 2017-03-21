@@ -1,35 +1,24 @@
 require "dotenv"
 require "lib/appsignal_markdown"
+require 'graphql_schema'
+require 'json'
 
 Dotenv.load
 
 DOCS_ROOT   = File.expand_path(File.dirname(__FILE__))
 GITHUB_ROOT = "https://github.com/appsignal/appsignal-docs/tree/master"
 
-GRAPHQL_OBJECTS = data.graphql.data['__schema']['types']
-  .select  { |t| t['kind'] == 'OBJECT'}
-  .reject  { |t| t['name'] == 'Query' || t['name'].start_with?('__') }
-  .sort_by { |t| t['name'] }
+schema = GraphQLSchema.new(data.graphql)
 
-GRAPHQL_INTERFACES = data.graphql.data['__schema']['types']
-  .select  { |t| t['kind'] == 'INTERFACE' }
-  .reject  { |t| t['name'].start_with?('__') }
-  .sort_by { |t| t['name'] }
+GRAPHQL_OBJECTS = schema.types.select(&:object?).reject(&:builtin?)
 
-GRAPHQL_SCALARS = data.graphql.data['__schema']['types']
-  .select  { |t| t['kind'] == 'SCALAR' }
-  .reject  { |t| t['name'].start_with?('__') }
-  .sort_by { |t| t['name'] }
+GRAPHQL_INTERFACES = schema.types.select(&:interface?)
 
-GRAPHQL_ENUMS = data.graphql.data['__schema']['types']
-  .select  { |t| t['kind'] == 'ENUM' }
-  .reject  { |t| t['name'].start_with?('__') }
-  .sort_by { |t| t['name'] }
+GRAPHQL_SCALARS = schema.types.select(&:scalar?)
 
-GRAPHQL_UNIONS = data.graphql.data['__schema']['types']
-  .select  { |t| t['kind'] == 'UNION' }
-  .reject  { |t| t['name'].start_with?('__') }
-  .sort_by { |t| t['name'] }
+GRAPHQL_ENUMS = schema.types.select(&:enum?)
+
+GRAPHQL_UNIONS = schema.types.select(&:union?)
 
 Time.zone = "Amsterdam"
 
@@ -44,23 +33,19 @@ set :images_dir, 'images'
 activate :syntax, :line_numbers => true
 
 GRAPHQL_OBJECTS.each do |obj|
-  proxy "/graphql/objects/#{obj['name'].underscore}.html", "/graphql/object.html", :locals => { :obj => obj }, :ignore => true
+  proxy "/graphql/object/#{obj.name.underscore}.html", "/graphql/object.html", :locals => { :obj => obj }, :ignore => true
 end
 
 GRAPHQL_INTERFACES.each do |obj|
-  proxy "/graphql/interfaces/#{obj['name'].underscore}.html", "/graphql/interface.html", :locals => { :obj => obj }, :ignore => true
-end
-
-GRAPHQL_SCALARS.each do |obj|
-  proxy "/graphql/scalars/#{obj['name'].underscore}.html", "/graphql/scalar.html", :locals => { :obj => obj }, :ignore => true
+  proxy "/graphql/interface/#{obj.name.underscore}.html", "/graphql/interface.html", :locals => { :obj => obj }, :ignore => true
 end
 
 GRAPHQL_ENUMS.each do |obj|
-  proxy "/graphql/enums/#{obj['name'].underscore}.html", "/graphql/enum.html", :locals => { :obj => obj }, :ignore => true
+  proxy "/graphql/enum/#{obj.name.underscore}.html", "/graphql/enum.html", :locals => { :obj => obj }, :ignore => true
 end
 
 GRAPHQL_UNIONS.each do |obj|
-  proxy "/graphql/unions/#{obj['name'].underscore}.html", "/graphql/union.html", :locals => { :obj => obj }, :ignore => true
+  proxy "/graphql/union/#{obj.name.underscore}.html", "/graphql/union.html", :locals => { :obj => obj }, :ignore => true
 end
 
 
@@ -71,6 +56,22 @@ helpers do
       path,
       :class => ('active' if path == "/#{current_path}")
     )
+  end
+
+  def type_link(type)
+    # Objects/Interfaces have dedicated pages
+    path = if %w(OBJECT INTERFACE UNION).include?(type.kind)
+      "/graphql/#{type.unwrap.kind.downcase}/#{(type.unwrap.name).try(:underscore) }.html"
+
+    # The rest has a single page
+    else
+      "/graphql/#{type.unwrap.kind.downcase}.html##{(type.unwrap.name).try(:underscore) }"
+    end
+    link_to type.unwrap.name, path
+  end
+
+  def field_link(field)
+    type_link(field.type.unwrap)
   end
 
   def edit_link

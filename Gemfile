@@ -9,7 +9,8 @@ gem "middleman-cloudfront"
 gem "middleman-syntax"
 gem "redcarpet"
 gem "bourbon"
-
+gem "graphql_schema"
+gem "pry"
 # For deploy
 gem "rake"
 gem "dotenv"

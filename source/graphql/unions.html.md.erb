@@ -1,0 +1,12 @@
+---
+title: "GraphQL Union"
+---
+
+Like America, but different
+
+
+## Available unions
+
+<%- graphql_unions.each do |obj| %>
+* <%= link_to obj.name, "/graphql/union/#{obj.name.underscore}.html" %>
+<%- end %>

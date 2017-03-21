@@ -2,13 +2,17 @@
 title: "GraphQL Object"
 ---
 
-#  <%= obj['name'] %>
-<%= obj['description'] %>
+#  <%= obj.name %>
+<%= obj.description %>
+
+## Interfaces
+<%= obj.interfaces.sort_by { |i| i.name}.map { |i| type_link(i) }.join(', ') %>
 
 ## Fields
-<% obj['fields'].sort_by { |f| f['name'] }.each do |field| %>
-__<%= field['name'] %>__ (<%= link_to (field['type']['name'] || field['type']['ofType']['name']), "/graphql/scalars.html##{(field['type']['name'] || field['type']['ofType']['name']).try(:downcase) }" %>)
+<% obj.fields.sort_by { |f| f.name }.each do |field| %>
+__<%= field.name %>__ (<%= field_link(field) %>)
 
-<%= field['description'] %>
+<%= field.description %>
 
 <% end %>
+
